@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include "term.h"
 #include <unistd.h>
+#include <string.h>
 
 char **parse_line(char* line)
 {		
 
+	char *token = strtok(line, " ");
 
-	
+	while (token != NULL)
+	{
+		printf("%s\n", token);
+		token = 
+	}
+
 }
 
 
@@ -32,7 +39,7 @@ int launch_process(char **args)
 		printf("Parent's pid is potentially %d\n", getpid());
 	}
 
-	return (int) pid;
+	return pid;
 }
 
 
