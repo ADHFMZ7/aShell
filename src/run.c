@@ -3,17 +3,34 @@
 #include <unistd.h>
 #include <string.h>
 
+int count_args(char *line)
+{
+	
+	int num_lines = 0;
+	int idx = 0;
+
+	while (line[idx]) {
+		if (line[idx] == ' '){
+			num_lines++;
+		}
+	}
+	return num_lines;
+
+}
+
 char **parse_line(char* line)
 {		
 
-	char *token = strtok(line, " ");
+	int num_lines = count_args(line);
+	char *token;
+	char **args = malloc(sizeof(char) * ;
 
-	while (token != NULL)
-	{
-		printf("%s\n", token);
-		token = 
+
+	for (int i = 0; i < num_lines; i++) {
+		args[i] = strtok(line, " ");	
 	}
 
+	return args;
 }
 
 
@@ -30,13 +47,13 @@ int launch_process(char **args)
 	else if (pid == 0)
 	{
 		pid = getpid();
-
+		printf("Child's pid is %d\n", pid);
 		return 0;
 	}
 	else
 	{
-		printf("child's pid is %d\n", pid);
-		printf("Parent's pid is potentially %d\n", getpid());
+		printf("Parent's pid is %d\n", getpid());
+		printf("Parent thinks child's pid is %d\n", pid);
 	}
 
 	return pid;
