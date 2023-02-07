@@ -19,8 +19,13 @@ int launch_process(char **args)
 	{
 		pid = getpid();
 		fflush(stdout);
-		if (execv(args[0], args) == -1) 
+		char *envs[] = {(char*) "PATH=/bin", 0};
+		char command[80];
+		strcpy(command, "/bin/");
+		strcat(command, args[0]);
+		if (execve(command, args, envs) == -1) 
 		{
+			printf("Failed to execute %s\n", args[0]);
 			return -1;
 		}
 		return 0;
@@ -35,7 +40,7 @@ int launch_process(char **args)
 
 int run(char *buffer)
 {
-	char **args = lsh_split_line(buffer);
+	char **args = split_line(buffer);
 
 	
 	// we need to run the program with the proper arguments.
