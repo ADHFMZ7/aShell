@@ -10,7 +10,8 @@ int repl(size_t bufsize)
 {
 
 	// This is where I will parse configs and apply them
-	//
+
+
 	char *buffer = malloc(sizeof(char) * bufsize);
 
 	// start the execution loop

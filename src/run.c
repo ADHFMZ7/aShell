@@ -24,6 +24,7 @@ int launch_process(char **args)
 		{
 			printf("Failed to execute %s\n", args[0]);
 		}
+		exit(pid);
 	}
 	else
 	{
