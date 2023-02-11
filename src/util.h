@@ -3,4 +3,6 @@
 
 char **split_line(char *args);
 
+int count_args(char *args);
+
 #endif

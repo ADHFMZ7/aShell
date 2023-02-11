@@ -35,4 +35,17 @@ char **split_line(char *line)
 	return tokens;
 }
 
+int count_args(char *args)
+{
+	if (args[0] == '\0' || args[0] == '\n') return 0;
+	int count = 0;
+	for (int i = 0; args[i] != '\0'; i++)
+	{
+		if (args[i] == ' ' && args[i+1] != ' ')
+		{
+			count++;
+		}
+	}
+	return ++count;
+}
 
