@@ -9,5 +9,11 @@ The ash shell is a minimal Unix shell that will implement the basic commands suc
 - file redirection
 - input/output piping
 
+TODO: 
+- Implement ~
+- Implement pipes
+- Implement redirection 
+
+
 ## Goals
 - OpenGL rendered
