@@ -52,7 +52,14 @@ int run(char *buffer)
 		}
 		return 0;
 	}
-	return launch_process(args);
+	else if (strcmp("exit", args[0]) == 0)
+	{
+		//exit_shell();
+		exit(0);
+	}
+	else {
+		return launch_process(args);
+	}
 }
 
 
