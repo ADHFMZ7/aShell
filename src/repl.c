@@ -30,7 +30,7 @@ int repl(size_t bufsize)
 	}
 
 	// terminate the program
-	printf("Exiting Ahmad's Terminal Emulator\n");
+	printf("Exiting Ahmad's Shell\n");
 
 	return 0;
 }
