@@ -11,7 +11,7 @@
 int main(int argc, char **argv)
 {
 
-	printf("Ahmad's Terminal Emulator version %s\n", VERSION_NUMBER);
+	printf("Ahmad's Shell version %s\n", VERSION_NUMBER);
 
 	if (argc == 1)
 	{
