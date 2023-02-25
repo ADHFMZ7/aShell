@@ -19,8 +19,9 @@ int repl(size_t bufsize)
 
 	while (1)
 	{
+		printf("\033[0;31m");
 		printf("%s", PROMPT);
-
+		printf("\033[0m");
 		if (getline(&buffer, &bufsize, stdin) == -1)
 		{
 			printf("\n");
