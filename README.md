@@ -19,3 +19,4 @@ work will begin when shell is completed.
 
 ## Goals
 - OpenGL rendered
+- Tab completion
