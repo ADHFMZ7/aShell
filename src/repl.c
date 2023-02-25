@@ -10,14 +10,13 @@ int repl(size_t bufsize)
 {
 
 	// This is where I will parse configs and apply them
-
+	// config();
 
 	char *buffer = malloc(sizeof(char) * bufsize);
 
 	// start the execution loop
 
-
-	while (1)
+	for(;;)
 	{
 		printf("\033[0;31m");
 		printf("%s", PROMPT);
