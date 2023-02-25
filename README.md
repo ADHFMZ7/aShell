@@ -14,6 +14,8 @@ TODO:
 - Implement pipes
 - Implement redirection 
 
+## Terminal Emulator
+work will begin when shell is completed.
 
 ## Goals
 - OpenGL rendered
