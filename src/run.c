@@ -61,5 +61,3 @@ int run(char *buffer)
 		return launch_process(args);
 	}
 }
-
-
