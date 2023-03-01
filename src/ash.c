@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	{
 		// implement running scripts
 		printf("Running file %s\n", argv[1]);
-		//return interpret(argv[1]);
+		//return run_file(argv[1]);
 	}
 	else 
 	{
