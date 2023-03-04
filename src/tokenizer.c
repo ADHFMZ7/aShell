@@ -29,6 +29,7 @@ Token scan_token()
 	result.type =		TOKEN_RIGHT_BRACE;
 	result.line = tokenizer.line;
 
+
 	return result;
 }
 
