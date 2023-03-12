@@ -13,7 +13,8 @@ enum TokenType {
 typedef struct Process {
 	Process *pipe;
 	char *program_name;
-	char **args;
+	char **argv;
+	int argc;
 } Process;
 
 

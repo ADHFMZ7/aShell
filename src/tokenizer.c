@@ -25,7 +25,15 @@ Process *scan_tokens(char **tokens)
 		if (cur->program_name == NULL) {
 			cur->program_name = tokens[ix];
 		}
-			
+		else if (tokens[ix][0] == '|') {
+			cur->pipe = (Process *) malloc(sizeof(Process));
+			cur = cur->pipe;	
+			cur->pipe= NULL;
+		}
+		else {
+			cur->args 	
+		}
+		
 	}
 	
 
