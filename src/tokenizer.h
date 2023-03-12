@@ -3,15 +3,9 @@
 
 #define MAX_BUF 128
 
-enum TokenType {
-	TOKEN_PIPE,
-	TOKEN_
-};
-
-
 
 typedef struct Process {
-	Process *pipe;
+	struct Process *pipe;
 	char *program_name;
 	char **argv;
 	int argc;
