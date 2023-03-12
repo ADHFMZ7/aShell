@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#define LSH_TOK_BUFSIZE 64
-#define LSH_TOK_DELIM " \t\r\n\a"
+#define BUFSIZE 64
+#define DELIM " \t\r\n\a"
 char **split_line(char *line)
 {
-	int bufsize = LSH_TOK_BUFSIZE, position = 0;
+	int bufsize = BUFSIZE, position = 0;
 	char **tokens = malloc(bufsize * sizeof(char*));
 	char *token;
 
@@ -15,13 +15,13 @@ char **split_line(char *line)
 		exit(EXIT_FAILURE);
 	}
 
-	token = strtok(line, LSH_TOK_DELIM);
+	token = strtok(line, DELIM);
 	while (token != NULL) {
 		tokens[position] = token;
 		position++;
 
 		if (position >= bufsize) {
-			bufsize += LSH_TOK_BUFSIZE;
+			bufsize += BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
 				fprintf(stderr, "lsh: allocation error\n");
@@ -29,7 +29,7 @@ char **split_line(char *line)
 			}
 		}
 
-		token = strtok(NULL, LSH_TOK_DELIM);
+		token = strtok(NULL, DELIM);
 	}
 	tokens[position] = NULL;
 	return tokens;

@@ -1,25 +1,24 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 
+#define MAX_BUF 128
 
 enum TokenType {
 	TOKEN_PIPE,
-	TOKEN_EOF,
-	TOKEN_RIGHT_BRACE,
-	TOKEN_LEFT_BRACE
+	TOKEN_
 };
 
 
 
-typedef struct {
-	enum TokenType type;
-	int line;
-	int process;
-} Token;
+typedef struct Process {
+	Process *pipe;
+	char *program_name;
+	char **args;
+} Process;
 
 
 void init_tokenizer(const char *source);
 
-void scan_tokens();
+Process *scan_tokens(char **tokens);
 
 #endif

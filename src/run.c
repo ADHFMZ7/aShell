@@ -40,32 +40,25 @@ int launch_process(char **args)
 int run(char *buffer)
 {
 
-	init_tokenizer(buffer);
+	int argc = count_args(buffer);
+	if (!argc) return 0;
+	char **args = split_line(buffer);
 
-	
-
-
-
-
-	// int argc = count_args(buffer);
-	// if (!argc) return 0;
-	// char **args = split_line(buffer);
-	//
-	// if (strcmp("cd", args[0]) == 0) 
-	// {
-	// 	if (chdir(args[1]) == -1)
-	// 	{
-	// 		printf("cd: no such file or directory\n");	
-	// 		return -1;
-	// 	}
-	// 	return 0;
-	// }
-	// else if (strcmp("exit", args[0]) == 0)
-	// {
-	// 	//exit_shell();
-	// 	exit(0);
-	// }
-	// else {
-	// 	return launch_process(args);
-	// }
+	if (strcmp("cd", args[0]) == 0) 
+	{
+		if (chdir(args[1]) == -1)
+		{
+			fprintf(stderr, "cd: no such file or directory\n");	
+			return 1;
+		}
+		return 0;
+	}
+	else if (strcmp("exit", args[0]) == 0)
+	{
+		//exit_shell();
+		exit(EXIT_SUCCESS);
+	}
+	else {
+		return launch_process(args);
+	}
 }
