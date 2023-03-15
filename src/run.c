@@ -34,6 +34,7 @@ int launch_process(Process *process)
 		wait(NULL);
 	}
 	return 0;
+
 }
 
 
