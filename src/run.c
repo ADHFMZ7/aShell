@@ -12,6 +12,7 @@ int launch_process(Process *process)
 
 	pid_t pid = fork();
 
+
 	if (pid == -1)
 	{
 		fprintf(stderr, "Failed to fork\n");
@@ -23,11 +24,22 @@ int launch_process(Process *process)
 		fflush(stdout);
 		char *envs[] = {(char*) "PATH=/bin:/usr/bin", 0};
 
+		if (process->pipe != NULL) {
+			int pipefd[2];			//Holds fd's for pipe; 0 for stdin, 1 for stdout
+			if (pipe(pipefd) == -1) {
+				fprintf(stderr, "Failed to pipe process\n");
+			}
+			
+
+		}
+
+		
+
 		if (execvp(process->program_name, process->argv) == -1) 
 		{
-			printf("Failed to execute %s\n", process->program_name);
+			fprintf(stderr, "Failed to execute %s\n", process->program_name);
 		}
-			exit(pid);
+		exit(pid);
 	}
 	else
 	{
@@ -57,6 +69,7 @@ int run(char *buffer)
 	else if (strcmp("exit", head->program_name) == 0)
 	{
 		//exit_shell();
+		printf("Exiting Ahmad shell\n");
 		exit(EXIT_SUCCESS);
 	}
 	else {

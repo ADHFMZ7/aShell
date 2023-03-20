@@ -31,6 +31,6 @@ int repl(size_t bufsize)
 
 	// terminate the program
 	printf("Exiting Ahmad's Shell\n");
-
+	free(buffer);
 	return 0;
 }
