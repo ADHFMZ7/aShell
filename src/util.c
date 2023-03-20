@@ -24,7 +24,7 @@ char **split_line(char *line)
 			bufsize += BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
-				fprintf(stderr, "lsh: allocation error\n");
+				fprintf(stderr, "ash: allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}

@@ -27,7 +27,7 @@ int launch_process(Process *process)
 		if (process->pipe != NULL) {
 			int pipefd[2];			//Holds fd's for pipe; 0 for stdin, 1 for stdout
 			if (pipe(pipefd) == -1) {
-				fprintf(stderr, "Failed to pipe process\n");
+				fprintf(stderr, "ash: Failed to pipe process\n");
 			}
 			
 
@@ -37,7 +37,7 @@ int launch_process(Process *process)
 
 		if (execvp(process->program_name, process->argv) == -1) 
 		{
-			fprintf(stderr, "Failed to execute %s\n", process->program_name);
+			fprintf(stderr, "ash: Failed to execute %s\n", process->program_name);
 		}
 		exit(pid);
 	}
@@ -76,3 +76,12 @@ int run(char *buffer)
 		return launch_process(head);
 	}
 }
+
+void create_pipe(Process* p_one, Process* p_two) {
+
+
+
+}
+
+
+
