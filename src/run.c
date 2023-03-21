@@ -13,27 +13,21 @@ int launch_process(Process *process)
 	pid_t pid = fork();
 
 
+	// fork fails 
 	if (pid == -1)
 	{
 		fprintf(stderr, "Failed to fork\n");
 		exit(EXIT_FAILURE);
 	}
+	// Current process is child
 	else if (pid == 0)
 	{
 		pid = getpid();
 		fflush(stdout);
 		char *envs[] = {(char*) "PATH=/bin:/usr/bin", 0};
 
-		if (process->pipe != NULL) {
-			int pipefd[2];			//Holds fd's for pipe; 0 for stdin, 1 for stdout
-			if (pipe(pipefd) == -1) {
-				fprintf(stderr, "ash: Failed to pipe process\n");
-			}
-			
 
-		}
 
-		
 
 		if (execvp(process->program_name, process->argv) == -1) 
 		{
@@ -41,6 +35,7 @@ int launch_process(Process *process)
 		}
 		exit(pid);
 	}
+	// Current process is parent
 	else
 	{
 		wait(NULL);
@@ -77,10 +72,16 @@ int run(char *buffer)
 	}
 }
 
-void create_pipe(Process* p_one, Process* p_two) {
+int *create_pipe(Process* p_one, Process* p_two) {
+	int pipefd[2];	
+	if (pipe(pipefd) == -1) {
+		fprintf(stderr, "ash: Failed to pipe process\n");
+	}			
+
+	
 
 
-
+	return pipefd;
 }
 
 
