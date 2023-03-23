@@ -68,7 +68,7 @@ int launch_process(Process *process, int in_fd, int out_fd, int *prev_pipefd) {
                 perror("open");
                 exit(EXIT_FAILURE);
             }
-            if (dup2(fd, STDOUT_FILENO) == -1) {
+            if (dup2(fd, STDIN_FILENO) == -1) {
                 perror("dup2");
                 exit(EXIT_FAILURE);
             }

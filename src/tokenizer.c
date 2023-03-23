@@ -47,11 +47,11 @@ Process *scan_tokens(char **tokens)
 		}
 		else if (tokens[ix][0] == '<') {
 			cur->input_file = tokens[++ix];
-			ix++;
+			continue;
 		}
 		else if (tokens[ix][0] == '>') {
 			cur->output_file = tokens[++ix];
-			ix++;
+			continue;
 		}
 		else if (tokens[ix][0] == '|') {
 			cur->pipe = init_process(cur);
