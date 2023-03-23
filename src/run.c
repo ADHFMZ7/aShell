@@ -5,6 +5,7 @@
 #include <util.h>
 #include "term.h"
 #include "tokenizer.h"
+#include <fcntl.h>
 
 int launch_process(Process *process, int in_fd, int out_fd, int *prev_pipefd) {
     int *pipefd = NULL;
@@ -25,41 +26,65 @@ int launch_process(Process *process, int in_fd, int out_fd, int *prev_pipefd) {
     else if (pid == 0) {
         // Child process
 
-        // Set up input redirection
-        if (in_fd != STDIN_FILENO) {
-            if (dup2(in_fd, STDIN_FILENO) == -1) {
-                perror("dup2");
-                exit(EXIT_FAILURE);
-            }
-            close(in_fd);
-        }
+        // // Set up input redirection
+        // if (in_fd != STDIN_FILENO) {
+        //     if (dup2(in_fd, STDIN_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(in_fd);
+        // }
+        //
+        // // Set up output redirection
+        // if (out_fd != STDOUT_FILENO) {
+        //     if (dup2(out_fd, STDOUT_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(out_fd);
+        // }
+        //
+        // // Set up piping
+        // if (prev_pipefd) {
+        //     close(prev_pipefd[1]); // Close the write end of the previous pipe
+        //     if (dup2(prev_pipefd[0], STDIN_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(prev_pipefd[0]);
+        // }
+        //
+        // if (process->pipe) {
+        //     if (dup2(pipefd[0], STDIN_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(pipefd[0]);
+        // }
 
-        // Set up output redirection
-        if (out_fd != STDOUT_FILENO) {
-            if (dup2(out_fd, STDOUT_FILENO) == -1) {
+        if (process->input_file) {
+            int fd = open(process->input_file, O_RDONLY); 
+            if (fd == -1) {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            if (dup2(fd, STDOUT_FILENO) == -1) {
                 perror("dup2");
                 exit(EXIT_FAILURE);
             }
-            close(out_fd);
+            close(fd);
         }
-
-        // Set up piping
-        if (prev_pipefd) {
-            close(prev_pipefd[1]); // Close the write end of the previous pipe
-            if (dup2(prev_pipefd[0], STDIN_FILENO) == -1) {
+        if (process->output_file) {
+            int fd = open(process->output_file, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH); 
+            if (fd == -1) {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            if (dup2(fd, STDOUT_FILENO) == -1) {
                 perror("dup2");
                 exit(EXIT_FAILURE);
             }
-            close(prev_pipefd[0]);
-        }
-
-        if (process->pipe) {
-            close(pipefd[0]);
-            if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
-                perror("dup2");
-                exit(EXIT_FAILURE);
-            }
-            close(pipefd[1]);
+            close(fd);
         }
 
         if (execvp(process->program_name, process->argv) == -1) {
@@ -72,20 +97,20 @@ int launch_process(Process *process, int in_fd, int out_fd, int *prev_pipefd) {
     else {
         // Parent process
 
-        if (prev_pipefd) {
-            close(prev_pipefd[0]); // Close the read end of the previous pipe
-            close(prev_pipefd[1]); // Close the write end of the previous pipe
-        }
-
-        if (process->pipe) {
-            launch_process(process->pipe, pipefd[0], out_fd, pipefd);
-            close(pipefd[0]);
-            close(pipefd[1]);
-        }
-        else {
+        // if (prev_pipefd) {
+        //     close(prev_pipefd[0]); // Close the read end of the previous pipe
+        //     close(prev_pipefd[1]); // Close the write end of the previous pipe
+        // }
+        //
+        // if (process->pipe) {
+        //     launch_process(process->pipe, pipefd[0], out_fd, pipefd);
+        //     close(pipefd[0]);
+        //     close(pipefd[1]);
+        // }
+        //else {
             int status;
             waitpid(pid, &status, 0);
-        }
+        //}
     }
 
     return 0;
@@ -111,6 +136,7 @@ int run(char *buffer)
 	{
 		//exit_shell();
 		printf("Exiting Ahmad shell\n");
+        
 		exit(EXIT_SUCCESS);
 	}
 	else {

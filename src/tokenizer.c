@@ -22,6 +22,8 @@ Process *init_process(Process *new_pipe) {
 		allocation_failure();
 	}
 	result->pipe = new_pipe;
+	result->input_file = NULL;
+	result->output_file = NULL;
 	return result;
 }
 
@@ -43,7 +45,15 @@ Process *scan_tokens(char **tokens)
 		if (cur->program_name == NULL) {
 			cur->program_name = tokens[ix];
 		}
-		if (tokens[ix][0] == '|') {
+		else if (tokens[ix][0] == '<') {
+			cur->input_file = tokens[++ix];
+			ix++;
+		}
+		else if (tokens[ix][0] == '>') {
+			cur->output_file = tokens[++ix];
+			ix++;
+		}
+		else if (tokens[ix][0] == '|') {
 			cur->pipe = init_process(cur);
 			cur = cur->pipe;	
 			continue;

@@ -9,6 +9,8 @@ typedef struct Process {
 	char *program_name;
 	char **argv;
 	int argc;
+	char *input_file;
+	char *output_file;
 } Process;
 
 
