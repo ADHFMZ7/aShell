@@ -12,7 +12,6 @@ The ash shell is a minimal Unix shell that will implement the basic commands suc
 TODO: 
 - Implement ~
 - Implement pipes
-- Implement redirection 
 
 ## Terminal Emulator
 work will begin when shell is completed.
