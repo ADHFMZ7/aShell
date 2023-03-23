@@ -6,57 +6,103 @@
 #include "term.h"
 #include "tokenizer.h"
 
+int launch_process(Process *process, int in_fd, int out_fd, int *prev_pipefd) {
+    int *pipefd = NULL;
+    if (process->pipe) {
+        pipefd = (int *) malloc(sizeof(int) * 2);
+        if (pipe(pipefd) == -1) {
+            perror("Pipe");
+            exit(EXIT_FAILURE);
+        }
+    }
 
-int launch_process(Process *process)
-{
+    pid_t pid = fork();
 
-	pid_t pid = fork();
+    if (pid == -1) {
+        perror("Fork");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) {
+        // Child process
 
+        // Set up input redirection
+        if (in_fd != STDIN_FILENO) {
+            if (dup2(in_fd, STDIN_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(in_fd);
+        }
 
-	// fork fails 
-	if (pid == -1)
-	{
-		fprintf(stderr, "Failed to fork\n");
-		exit(EXIT_FAILURE);
-	}
-	// Current process is child
-	else if (pid == 0)
-	{
-		pid = getpid();
-		fflush(stdout);
-		char *envs[] = {(char*) "PATH=/bin:/usr/bin", 0};
+        // Set up output redirection
+        if (out_fd != STDOUT_FILENO) {
+            if (dup2(out_fd, STDOUT_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(out_fd);
+        }
 
+        // Set up piping
+        if (prev_pipefd) {
+            close(prev_pipefd[1]); // Close the write end of the previous pipe
+            if (dup2(prev_pipefd[0], STDIN_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(prev_pipefd[0]);
+        }
 
+        if (process->pipe) {
+            close(pipefd[0]);
+            if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(pipefd[1]);
+        }
 
+        if (execvp(process->program_name, process->argv) == -1) {
+            fprintf(stderr, "ash: Failed to execute %s\n", process->program_name);
+            exit(EXIT_FAILURE);
+        }
 
-		if (execvp(process->program_name, process->argv) == -1) 
-		{
-			fprintf(stderr, "ash: Failed to execute %s\n", process->program_name);
-		}
-		exit(pid);
-	}
-	// Current process is parent
-	else
-	{
-		wait(NULL);
-	}
-	return 0;
+        exit(pid);
+    }
+    else {
+        // Parent process
 
+        if (prev_pipefd) {
+            close(prev_pipefd[0]); // Close the read end of the previous pipe
+            close(prev_pipefd[1]); // Close the write end of the previous pipe
+        }
+
+        if (process->pipe) {
+            launch_process(process->pipe, pipefd[0], out_fd, pipefd);
+            close(pipefd[0]);
+            close(pipefd[1]);
+        }
+        else {
+            int status;
+            waitpid(pid, &status, 0);
+        }
+    }
+
+    return 0;
 }
-
 
 int run(char *buffer)
 {
 
 	char **args = split_line(buffer);
 
-	Process *head = scan_tokens(args);	
+	Process *head = scan_tokens(args);
 
-	if (strcmp("cd", head->program_name) == 0) 
+	if (strcmp("cd", head->program_name) == 0)
 	{
 		if (chdir(head->argv[1]) == -1)
 		{
-			fprintf(stderr, "cd: no such file or directory\n");	
+			fprintf(stderr, "cd: no such file or directory\n");
 			return 1;
 		}
 		return 0;
@@ -68,21 +114,6 @@ int run(char *buffer)
 		exit(EXIT_SUCCESS);
 	}
 	else {
-		return launch_process(head);
+		return launch_process(head, STDIN_FILENO, STDOUT_FILENO, NULL);
 	}
 }
-
-int *create_pipe(Process* p_one, Process* p_two) {
-	int pipefd[2];	
-	if (pipe(pipefd) == -1) {
-		fprintf(stderr, "ash: Failed to pipe process\n");
-	}			
-
-	
-
-
-	return pipefd;
-}
-
-
-
