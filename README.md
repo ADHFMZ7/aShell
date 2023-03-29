@@ -15,7 +15,7 @@ TODO:
 
 ## Terminal Emulator
 work will begin when shell is completed.
-It is now hosted [here.](https://www.github.com/termu)
+It is now hosted [here.](https://www.github.com/adhfmz7/termu)
 
 ## Goals
 - OpenGL rendered
