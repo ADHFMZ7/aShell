@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "run.h"
-
-#define PROMPT ">>> "
+#include "config.h"
 
 
 int repl(size_t bufsize)
