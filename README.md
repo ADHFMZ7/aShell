@@ -3,8 +3,6 @@ A simple Unix shell
 
 This is a project to make my own Unix shell. My main goal is to get it running vim well.
 
-This is a project to make my own terminal emulator and a Unix shell. My main goal is to get it running vim well.
-
 I am also creating a [terminal emulator](github.com/adhfmz7/termu)
 
 ## Ash shell
