@@ -16,8 +16,5 @@ TODO:
 - Implement pipes
 - Add some kind of [readline](https://en.wikipedia.org/wiki/GNU_Readline) utility
 
-## Terminal Emulator
-work will begin when shell is completed.
-
 ## Goals
 - Tab completion
