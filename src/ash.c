@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 		// configure the REPL 
 
 
-		return repl(BUFSIZE);
+		return repl();
 	}
 	else if (argc == 2)
 	{

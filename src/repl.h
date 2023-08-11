@@ -3,6 +3,6 @@
 
 #include <stdlib.h>
 
-int repl(size_t bufsize);
+int repl();
 
 #endif

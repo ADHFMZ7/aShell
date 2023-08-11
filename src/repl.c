@@ -3,33 +3,35 @@
 #include <stdio.h>
 #include "run.h"
 #include "config.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
+static char *buffer = (char *)NULL;
 
-int repl(size_t bufsize)
+int repl()
 {
 
-	// This is where I will parse configs and apply them
-	// config();
+    // This is where I will parse configs and apply them
+    // config();
 
-	char *buffer = malloc(sizeof(char) * bufsize);
+    // start the execution loop
 
-	// start the execution loop
-
-	for(;;)
+    for(;;)
+    {
+	if (buffer)
 	{
-		printf("\033[0;31m");
-		printf("%s", PROMPT);
-		printf("\033[0m");
-		if (getline(&buffer, &bufsize, stdin) == -1)
-		{
-			printf("\n");
-			break;
-		}
-		run(buffer);
+	    free (buffer);
+	    buffer = (char *)NULL;
 	}
+	buffer = readline("\033[0;31m>>> \033[0m");
 
+	if (buffer && *buffer)
+	    add_history (buffer);
+	run(buffer);
+    }
 	// terminate the program
 	printf("Exiting Ahmad's Shell\n");
 	free(buffer);
 	return 0;
 }
+
