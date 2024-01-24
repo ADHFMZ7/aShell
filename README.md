@@ -12,5 +12,5 @@ The ash shell is a minimal Unix shell that will implement the basic commands suc
 - input/output piping
 
 TODO: 
-- Implement ~
+- Implement aliases
 - Implement pipes
